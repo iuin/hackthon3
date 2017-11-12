@@ -3,6 +3,8 @@ package com.emc.hackthon;
 import com.emc.hackthon.entity.Numeral;
 import com.emc.hackthon.util.CommonUtils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.List;
 
 /**
@@ -15,11 +17,12 @@ public class App {
 
     public static void main(String[] args) throws Exception{
         List<Numeral> numerals = CommonUtils.readTrainData("D:\\Projects\\github\\hackthon\\src\\main\\resources\\test.dat");
+        BufferedWriter bufWriter = new BufferedWriter(new FileWriter("result.txt"));
+
         for (Numeral numeral : numerals){
-            CommonUtils.createLineImage(numeral);
-            String feature = CommonUtils.getFeature(numeral);
+            bufWriter.write(numeral.getFeature()+"\n");
         }
 
-
+        bufWriter.close();
     }
 }

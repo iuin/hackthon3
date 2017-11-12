@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,10 +65,10 @@ public class CommonUtils {
 
 
     /**
-     * 生成线的图片
+     * 生成线的图片，根据的点来生成
      * @param numeral
      */
-    public static void createLineImage(Numeral numeral){
+    public static void createImageByPoint(Numeral numeral){
         int width = 100;
         int height = 100;
 
@@ -83,6 +85,35 @@ public class CommonUtils {
             com.emc.hackthon.entity.Point p1 = points.get(i);
             com.emc.hackthon.entity.Point p2 = points.get(i+1);
             g2.drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+        }
+
+        try {
+            ImageIO.write(bi, "jpg", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 根据线段生成图片
+     * @param numeral
+     */
+    public static void createImageByLine(Numeral numeral){
+        int width = 100;
+        int height = 100;
+        List<Line> lines = numeral.getLines();
+
+        File file = new File(IMAGE_FOLDER + numeral.getName()+"-"+ lines.size() + ".jpg");
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = (Graphics2D)bi.getGraphics();
+        g2.setBackground(Color.WHITE);
+        g2.clearRect(0, 0, width, height);
+        g2.setPaint(Color.RED);
+
+
+        for (int i = 0; i < lines.size(); i++) {
+            Line line = lines.get(i);
+            g2.drawLine(line.getP1().x,line.getP1().y,line.getP2().x,line.getP2().y);
         }
 
         try {
@@ -150,7 +181,7 @@ public class CommonUtils {
      * @param l2
      * @return
      */
-    public double compareAngle(Line l1, Line l2){
+    public static double compareAngle(Line l1, Line l2){
         double x1 = l1.getP2().x - l1.getP1().x;
         double y1 = l1.getP2().y - l1.getP1().y;
 
@@ -169,17 +200,13 @@ public class CommonUtils {
      * @param l2
      * @return
      */
-    public boolean isSameDirection(Line l1, Line l2) {
+    public static boolean isSameDirection(Line l1, Line l2) {
         return l1.getDirection().equals(l2.getDirection());
     }
 
-    /**
-     * 获取特征信息
-     * @param numeral
-     * @return
-     */
-    public static String getFeature(Numeral numeral) {
 
-        return null;
+    public static Line mergeLine(Line l1, Line l2) {
+        return new Line(l1.getP1(), l2.getP2());
     }
+
 }
