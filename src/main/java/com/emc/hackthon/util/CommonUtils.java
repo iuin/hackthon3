@@ -1,5 +1,6 @@
 package com.emc.hackthon.util;
 
+import com.emc.hackthon.entity.Line;
 import com.emc.hackthon.entity.Numeral;
 import com.emc.hackthon.entity.Point;
 
@@ -19,7 +20,21 @@ import java.util.List;
  */
 public class CommonUtils {
 
+    //direction
+    private static String IMAGE_FOLDER = "C://hackthon//tarin//image//";
+    static {
+        File folder = new File(IMAGE_FOLDER);
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+    }
 
+    /**
+     * 数据训练读取
+     * @param filepath
+     * @return
+     * @throws IOException
+     */
     public static List<Numeral> readTrainData(String filepath) throws IOException {
         List<Numeral> numerals = new ArrayList<Numeral>();
         File file = new File(filepath);
@@ -48,13 +63,14 @@ public class CommonUtils {
 
 
     /**
-     * 生成图片
+     * 生成线的图片
      * @param numeral
      */
     public static void createLineImage(Numeral numeral){
         int width = 100;
         int height = 100;
-        File file = new File(numeral.getName() + ".jpg");
+
+        File file = new File(IMAGE_FOLDER + numeral.getName() + ".jpg");
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = (Graphics2D)bi.getGraphics();
         g2.setBackground(Color.WHITE);
@@ -77,7 +93,7 @@ public class CommonUtils {
     }
 
     /**
-     * 生成图片
+     * 生成点的图片
      * @param numeral
      */
     public static void createPointImage(Numeral numeral){
@@ -125,6 +141,45 @@ public class CommonUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    /**
+     * 比较角度
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public double compareAngle(Line l1, Line l2){
+        double x1 = l1.getP2().x - l1.getP1().x;
+        double y1 = l1.getP2().y - l1.getP1().y;
+
+        double x2 = l2.getP2().x - l2.getP1().x;
+        double y2 = l2.getP2().y - l2.getP1().y;
+
+        double angle1 = Math.toDegrees(Math.atan(y1/x1));
+        double angle2 = Math.toDegrees(Math.atan(y2/x2));
+
+        return Math.abs(angle1 - angle2);
+    }
+
+    /**
+     * 方向是否一致
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public boolean isSameDirection(Line l1, Line l2) {
+        return l1.getDirection().equals(l2.getDirection());
+    }
+
+    /**
+     * 获取特征信息
+     * @param numeral
+     * @return
+     */
+    public static String getFeature(Numeral numeral) {
+
         return null;
     }
 }

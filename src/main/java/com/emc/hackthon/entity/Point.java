@@ -8,8 +8,8 @@ package com.emc.hackthon.entity;
  */
 public class Point {
 
-    private Integer x;
-    private Integer y;
+    public Integer x;
+    public Integer y;
 
     public Point(Integer x, Integer y) {
         this.x = x;

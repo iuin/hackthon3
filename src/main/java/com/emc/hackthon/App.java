@@ -17,6 +17,7 @@ public class App {
         List<Numeral> numerals = CommonUtils.readTrainData("D:\\Projects\\github\\hackthon\\src\\main\\resources\\test.dat");
         for (Numeral numeral : numerals){
             CommonUtils.createLineImage(numeral);
+            String feature = CommonUtils.getFeature(numeral);
         }
 
 
